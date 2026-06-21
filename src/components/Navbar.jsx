@@ -115,7 +115,7 @@ export default function Navbar() {
                     </div>
                 ) : (
                     <div className="flex items-center gap-4">
-                        <Link href="/login" className="text-sm font-medium text-slate-600 hover:text-emerald-600 hidden sm:inline-block">
+                        <Link href="/login" className="text-sm font-medium text-slate-600 hover:text-emerald-600  sm:inline-block">
                             Login
                         </Link>
                         {/* 🟢 Matching Solid Emerald Register Button */}
