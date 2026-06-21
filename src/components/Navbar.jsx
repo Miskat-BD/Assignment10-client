@@ -45,7 +45,7 @@ export default function Navbar() {
                             <li key={index}>
                                 <Link
                                     href={item.path}
-                                    className={pathname === item.path ? "active text-white bg-indigo-600" : ""}
+                                    className={pathname === item.path ? "active text-black !bg-emerald-600" : ""}
                                 >
                                     {item.label}
                                 </Link>
@@ -53,7 +53,8 @@ export default function Navbar() {
                         ))}
                     </ul>
                 </div>
-                <Link href="/" className="font-bold text-2xl text-green-900 tracking-tight">
+                {/* 🟢 Premium Emerald Green Logo */}
+                <Link href="/" className="font-bold text-2xl text-emerald-600 tracking-tight">
                     StartupForge
                 </Link>
             </div>
@@ -67,8 +68,9 @@ export default function Navbar() {
                             <li key={index}>
                                 <Link
                                     href={item.path}
-                                    className={`hover:text-green-800 transition-colors ${isActive ? "text-green-800 font-semibold bg-transparent" : "text-slate-600"
-                                        }`}
+                                    className={`hover:text-emerald-600 transition-colors ${
+                                        isActive ? "text-emerald-600 font-semibold bg-transparent" : "text-slate-600"
+                                    }`}
                                 >
                                     {item.label}
                                 </Link>
@@ -78,12 +80,12 @@ export default function Navbar() {
                 </ul>
             </div>
 
-            {/* Navbar End: Authentication (Profile Dropdown / Login-Register Buttons) */}
+            {/* Navbar End: Authentication */}
             <div className="navbar-end">
                 {user ? (
                     <div className="dropdown dropdown-end">
                         <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar online">
-                            <div className="w-10 rounded-full ring ring-indigo-600 ring-offset-base-100 ring-offset-2">
+                            <div className="w-10 rounded-full ring ring-emerald-600 ring-offset-base-100 ring-offset-2">
                                 <img alt={user.name} src={user.image} />
                             </div>
                         </div>
@@ -93,12 +95,12 @@ export default function Navbar() {
                         >
                             <li className="px-2 py-1 border-b border-base-200">
                                 <p className="font-semibold text-slate-500 text-xs uppercase tracking-wider">Signed in as</p>
-                                <p className="font-bold text-green-800 truncate">{user.email}</p>
+                                <p className="font-bold text-emerald-600 truncate">{user.email}</p>
                             </li>
                             <li>
                                 <Link href="/dashboard" className="justify-between">
                                     Dashboard
-                                    <span className="badge badge-indigo text-white bg-green-900 text-[10px]">{user.role}</span>
+                                    <span className="badge text-white bg-emerald-600 text-[10px]">{user.role}</span>
                                 </Link>
                             </li>
                             <li>
@@ -113,10 +115,11 @@ export default function Navbar() {
                     </div>
                 ) : (
                     <div className="flex items-center gap-4">
-                        <Link href="/login" className="text-sm font-medium text-slate-600 hover:text-green-800 hidden sm:inline-block">
+                        <Link href="/login" className="text-sm font-medium text-slate-600 hover:text-emerald-600 hidden sm:inline-block">
                             Login
                         </Link>
-                        <Link href="/register" className="btn bg-green-800 hover:bg-green-900 text-white border-none min-h-0 h-10 px-5">
+                        {/* 🟢 Matching Solid Emerald Register Button */}
+                        <Link href="/register" className="btn bg-emerald-600 hover:bg-emerald-700 text-white border-none min-h-0 h-10 px-5 normal-case">
                             Register
                         </Link>
                     </div>
