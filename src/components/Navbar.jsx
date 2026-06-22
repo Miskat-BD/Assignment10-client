@@ -8,6 +8,7 @@ import Image from "next/image";
 
 export default function Navbar() {
     const pathname = usePathname();
+    
     const {
         data: session,
         error
@@ -37,6 +38,9 @@ export default function Navbar() {
         await authClient.signOut()
         router.push('/')
         router.refresh()
+    }
+    if(pathname.includes('dashboard')){
+      return null;
     }
 
     return (

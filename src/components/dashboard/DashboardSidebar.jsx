@@ -9,6 +9,18 @@ import Image from "next/image";
 const SidebarContent = ({ user, role, currentMenu, pathname, setIsOpen }) => (
     <div className="flex flex-col justify-between h-full p-6 bg-white">
         <div className="space-y-6">
+            {/* 🌐 Project Header Title (হোম পেজ লিংক) */}
+            <div className="pb-2 border-b border-slate-50">
+                <Link 
+                    href="/" 
+                    className="text-xl font-black text-slate-800 tracking-tight flex items-center gap-2 hover:opacity-80 transition-opacity"
+                >
+                    <span className="bg-emerald-600 text-white w-7 h-7 rounded-lg flex items-center justify-center font-bold text-sm">S</span>
+                    Startup<span className="text-emerald-600">Forge</span>
+                </Link>
+            </div>
+
+            {/* User Info & Role Badge */}
             <div>
                 <div className="flex items-center gap-3 mb-2">
                     {user?.image && (
@@ -27,6 +39,7 @@ const SidebarContent = ({ user, role, currentMenu, pathname, setIsOpen }) => (
                 </span>
             </div>
 
+            {/* Navigation Links */}
             <nav className="space-y-1">
                 {currentMenu.map((item) => {
                     const isActive = pathname === item.href;
@@ -35,10 +48,11 @@ const SidebarContent = ({ user, role, currentMenu, pathname, setIsOpen }) => (
                             key={item.name}
                             href={item.href}
                             onClick={() => setIsOpen(false)} // মোবাইল মেনু বন্ধ করার জন্য
-                            className={`flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all ${isActive
+                            className={`flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all ${
+                                isActive
                                     ? "bg-emerald-50 text-emerald-700 font-semibold"
                                     : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-                                }`}
+                            }`}
                         >
                             {item.name}
                         </Link>
@@ -60,6 +74,7 @@ export default function DashboardSidebar({ user, role, currentMenu }) {
 
     return (
         <>
+            {/* 📱 Mobile Top Navbar Toggle */}
             <div className="lg:hidden flex items-center justify-between bg-white px-4 py-3 border-b border-slate-100 w-full sticky top-0 z-30">
                 <button
                     onClick={() => setIsOpen(true)}
@@ -69,6 +84,12 @@ export default function DashboardSidebar({ user, role, currentMenu }) {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
                 </button>
+                
+                {/* 📱 মোবাইলের জন্যও এখানে ক্লিক করলে হোমে যাবে */}
+                <Link href="/" className="text-base font-black text-slate-800 tracking-tight sm:block">
+                    Startup<span className="text-emerald-600">Forge</span>
+                </Link>
+
                 <span className="text-xs font-bold uppercase tracking-wider text-slate-400">{role} board</span>
             </div>
 
@@ -89,7 +110,7 @@ export default function DashboardSidebar({ user, role, currentMenu }) {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </button>
-                        <div className="h-full pt-10">
+                        <div className="h-full pt-4">
                             <SidebarContent
                                 user={user}
                                 role={role}
