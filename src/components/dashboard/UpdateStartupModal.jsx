@@ -4,8 +4,8 @@ import React, { useState } from "react";
 import { Button, Form, Input, Label, TextField, FieldError, Modal } from "@heroui/react";
 import Image from "next/image";
 import { imageUpload } from "@/app/lib/imgUpload";
-import { updateStartup } from "@/app/lib/api/startup";
 import toast from "react-hot-toast";
+import { updateStartup } from "@/app/lib/actions/startup";
 
 export default function UpdateStartupModal({ myStartup, setMyStartup, fundingStages }) {
     const [editLogoPreview, setEditLogoPreview] = useState(myStartup?.logo || null);
@@ -25,18 +25,17 @@ export default function UpdateStartupModal({ myStartup, setMyStartup, fundingSta
         const formElement = e.currentTarget;
         const formData = new FormData(formElement);
         const logoFile = formData.get("logo");
-        let logoUrl = myStartup?.logo || "";
+        let logoUrl = "";
 
         if (logoFile && logoFile.size > 0) {
             const uploadResult = await imageUpload(logoFile);
             logoUrl = uploadResult.url;
         }
-
         const formEntries = Object.fromEntries(formData.entries());
-        
+
         const filteredUpdates = {};
         Object.keys(formEntries).forEach((key) => {
-            if (formEntries[key] !== undefined && formEntries[key] !== "") {
+            if (key !== "logo" && formEntries[key] !== undefined && formEntries[key].trim() !== "") {
                 filteredUpdates[key] = formEntries[key];
             }
         });
@@ -49,18 +48,24 @@ export default function UpdateStartupModal({ myStartup, setMyStartup, fundingSta
             ...myStartup,
             ...filteredUpdates,
         };
-
-        // console.log("Sending to backend:", filteredUpdates);
+        if (Object.keys(filteredUpdates).length === 0) {
+            toast.error("No changes made to update!");
+            setIsUpdating(false);
+            return;
+        }
 
         const res = await updateStartup(myStartup._id || myStartup.id, filteredUpdates);
-        // console.log(res);
 
-        if (res && (res.modifiedCount || res.acknowledged || res.success)) {
+
+        if (res && (res.modifiedCount > 0 || res.acknowledged || res.success)) {
             toast.success("🎉 Startup Profile Updated Successfully!");
             setMyStartup(updatedStartupData);
+        } else if (res && res.modifiedCount === 0) {
+            toast.get("ℹ️ No new changes detected.");
         } else {
-            setMyStartup(updatedStartupData);
+            toast.error("❌ Something went wrong!");
         }
+
         setIsUpdating(false);
     };
 
@@ -79,20 +84,20 @@ export default function UpdateStartupModal({ myStartup, setMyStartup, fundingSta
                                 Modify your startup profile details below. Changes will reflect everywhere immediately.
                             </p>
                         </Modal.Header>
-                        
+
                         <Form onSubmit={onUpdateSubmit} className="flex flex-col flex-1">
                             <Modal.Body className="space-y-5 p-6 w-full flex flex-col">
-                                
+
                                 <div className="flex flex-col gap-1 w-full">
                                     <label className="text-xs font-bold text-slate-700 uppercase tracking-wider">Startup Logo</label>
                                     <div className="flex items-center gap-4 p-3 border border-dashed border-slate-200 rounded-xl">
                                         <div className="w-16 h-16 bg-slate-50 border border-slate-100 rounded-xl flex items-center justify-center overflow-hidden shrink-0 relative">
-                                            <Image 
-                                                fill 
-                                                src={editLogoPreview || "/placeholder-logo.png"} 
-                                                alt="Preview" 
+                                            <Image
+                                                fill
+                                                src={editLogoPreview || "/placeholder-logo.png"}
+                                                alt="Preview"
                                                 sizes="(max-width: 768px) 100vw, 100px"
-                                                className="object-cover" 
+                                                className="object-cover"
                                             />
                                         </div>
                                         <div className="flex flex-col gap-1">

@@ -8,6 +8,7 @@ import { imageUpload } from "@/app/lib/imgUpload";
 import { createStartup } from "@/app/lib/actions/startup";
 import { getStartupByFounderId } from "@/app/lib/api/startup";
 import UpdateStartupModal from "@/components/dashboard/UpdateStartupModal";
+import DeleteStartupModal from "@/components/dashboard/DeleteStartupModa;";
 
 export default function CreateStartupPage() {
     const [logoPreview, setLogoPreview] = useState(null);
@@ -118,17 +119,12 @@ export default function CreateStartupPage() {
                     {/* Action Buttons Section */}
                     <div className="flex gap-3 justify-end pt-4 border-t border-slate-100">
                         <UpdateStartupModal
-                            myStartup={myStartup} 
-                            setMyStartup={setMyStartup} 
-                            fundingStages={fundingStages} 
+                            myStartup={myStartup}
+                            setMyStartup={setMyStartup}
+                            fundingStages={fundingStages}
                         />
 
-                        <Button
-                            className="bg-red-500 hover:bg-red-600 text-white font-semibold rounded-xl px-5"
-                            onClick={() => alert("Delete functionality coming soon!")}
-                        >
-                            Delete Startup
-                        </Button>
+                        <DeleteStartupModal startupId={myStartup._id || myStartup.id} setMyStartup={setMyStartup} />
                     </div>
                 </div>
             ) : (
@@ -178,7 +174,7 @@ export default function CreateStartupPage() {
                             </div>
                         </div>
 
-                        {/* Inputs Grid */}
+                       
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
                             <TextField isRequired name="name" type="text" className="flex flex-col gap-1">
                                 <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">Startup Name</Label>
