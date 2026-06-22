@@ -2,8 +2,9 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { authClient } from "@/app/lib/auth-client";
+import Image from "next/image";
 
 export default function Navbar() {
     const pathname = usePathname();
@@ -12,7 +13,8 @@ export default function Navbar() {
         error
     } = authClient.useSession()
     const user = session?.user
-    console.log(user);
+    // console.log(user);
+    const router = useRouter()
     // Safety guard rails for Next.js SSR Hydration
     const [mounted, setMounted] = useState(false);
 
@@ -31,6 +33,11 @@ export default function Navbar() {
             document.activeElement.blur();
         }
     };
+    const handleSignOut = async ()=>{
+        await authClient.signOut()
+        router.push('/')
+        router.refresh()
+    }
 
     return (
         <div className="navbar bg-base-100 border-b border-base-200 sticky top-0 z-50 px-4 md:px-8">
@@ -116,7 +123,7 @@ export default function Navbar() {
                     <div className="dropdown dropdown-end">
                         <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar online">
                             <div className="w-10 rounded-full ring ring-emerald-600 ring-offset-base-100 ring-offset-2">
-                                <img alt={user?.name} src={user?.image} />
+                                <Image alt={user?.name} src={user?.image} height={100} width={100}/>
                             </div>
                         </div>
                         <ul
@@ -128,7 +135,7 @@ export default function Navbar() {
                                 <p className="font-bold text-emerald-600 truncate">{user?.email}</p>
                             </li>
                             <li>
-                                <Link href="/dashboard" className="justify-between" onClick={closeDropdown}>
+                                <Link href={`/dashboard/${user?.role}`} className="justify-between" onClick={closeDropdown}>
                                     Dashboard
                                     <span className="badge text-white bg-emerald-600 text-[10px]">{user?.role}</span>
                                 </Link>
@@ -137,7 +144,7 @@ export default function Navbar() {
                                 <Link href="/profile" onClick={closeDropdown}>My Profile</Link>
                             </li>
                             <li className="mt-2">
-                                <button onClick={async () => await authClient.signOut()} className="btn btn-error btn-sm btn-outline w-full text-left">
+                                <button onClick={handleSignOut} className="btn btn-error btn-sm btn-outline w-full text-left">
                                     Log Out
                                 </button>
                             </li>
