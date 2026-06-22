@@ -5,6 +5,7 @@ import { Button, Form, Input, Label, TextField, FieldError } from "@heroui/react
 import Image from "next/image";
 import { authClient } from "@/app/lib/auth-client";
 import { imageUpload } from "@/app/lib/imgUpload";
+import { createStartup } from "@/app/lib/actions/startup";
 
 export default function CreateStartupPage() {
     const [logoPreview, setLogoPreview] = useState(null);
@@ -43,14 +44,19 @@ export default function CreateStartupPage() {
             const finalStartupData = {
                 ...formEntries,
                 logo: logoUrl, 
+                founderId: user?.id,
+                status:'pending'
             };
 
-            console.log("Final Data ready for Express Backend:", finalStartupData);
+            // console.log("Final Data ready for Express Backend:", finalStartupData);
+
+            const res = await createStartup(finalStartupData)
+            console.log(res, 'res');
 
         } catch (error) {
             console.error("Error creating startup profile:", error);
         } finally {
-            setIsSubmitting(false); // লোডিং শেষ
+            setIsSubmitting(false);
         }
     };
 
