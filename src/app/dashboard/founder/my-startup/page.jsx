@@ -7,6 +7,7 @@ import { authClient } from "@/app/lib/auth-client";
 import { imageUpload } from "@/app/lib/imgUpload";
 import { createStartup } from "@/app/lib/actions/startup";
 import { getStartupByFounderId } from "@/app/lib/api/startup";
+import UpdateStartupModal from "@/components/dashboard/UpdateStartupModal";
 
 export default function CreateStartupPage() {
     const [logoPreview, setLogoPreview] = useState(null);
@@ -94,8 +95,8 @@ export default function CreateStartupPage() {
                         <div className="text-center sm:text-left space-y-1">
                             <div className="flex flex-col sm:flex-row items-center gap-3">
                                 <h1 className="text-2xl font-extrabold text-slate-900">{myStartup.name || myStartup.startup_name}</h1>
-                                <span className="px-3 py-1 bg-amber-50 text-amber-600 text-xs font-bold rounded-full capitalize border border-amber-200">
-                                    {myStartup.status}
+                                <span className={`px-3 py-1 ${myStartup.status == 'pending' ? 'bg-amber-50 text-amber-600' : myStartup.status == 'active' ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'} text-xs font-bold rounded-full capitalize border border-amber-200`}>
+                                    {myStartup.status || "pending"}
                                 </span>
                             </div>
                             <p className="text-sm font-semibold text-emerald-600">{myStartup.industry}</p>
@@ -114,14 +115,14 @@ export default function CreateStartupPage() {
                         </div>
                     </div>
 
-                    {/* 🛠️ update & delete button */}
+                    {/* Action Buttons Section */}
                     <div className="flex gap-3 justify-end pt-4 border-t border-slate-100">
-                        <Button
-                            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl px-5"
-                            onClick={() => alert("Update functionality coming soon!")}
-                        >
-                            Update Profile
-                        </Button>
+                        <UpdateStartupModal
+                            myStartup={myStartup} 
+                            setMyStartup={setMyStartup} 
+                            fundingStages={fundingStages} 
+                        />
+
                         <Button
                             className="bg-red-500 hover:bg-red-600 text-white font-semibold rounded-xl px-5"
                             onClick={() => alert("Delete functionality coming soon!")}
@@ -131,7 +132,6 @@ export default function CreateStartupPage() {
                     </div>
                 </div>
             ) : (
-
                 <>
                     <div className="pb-4 border-b border-slate-100">
                         <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight sm:text-3xl">
