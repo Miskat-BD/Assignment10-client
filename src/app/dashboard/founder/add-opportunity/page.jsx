@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import { Button, Form, Input, Label, TextField, FieldError } from "@heroui/react";
 import { authClient } from "@/app/lib/auth-client";
 import { getStartupByFounderId } from "@/app/lib/api/startup";
-// ১. আপনার অপরচুনিটি ফেচ করার এপিআই ফাংশনটি ইমপোর্ট করুন (নামটি আপনার প্রজেক্ট অনুযায়ী চেঞ্জ করে নেবেন)
 import toast from "react-hot-toast";
 import { createOpportunity } from "@/app/lib/actions/opportunity";
 import PendingApprovalBanner from "@/components/dashboard/PendingApprovalBanner";
@@ -15,27 +14,33 @@ export default function AddOpportunityPage() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isLoadingData, setIsLoadingData] = useState(true);
     const [myStartup, setMyStartup] = useState(null);
-    const [opportunityCount, setOpportunityCount] = useState(0); // অ্যারে লেন্থ এখানে সেভ হবে
+    const [opportunityCount, setOpportunityCount] = useState(0);
 
+    // 🌟 এখানে শুধু data নিন, updateSession এর দরকার নেই
     const { data: session } = authClient.useSession();
     const user = session?.user;
 
     useEffect(() => {
         const fetchData = async () => {
             if (user?.id) {
-                // ২. প্রথমে স্টার্টআপ ডাটা ফেচ করুন
-                const startupData = await getStartupByFounderId(user.id);
-                setMyStartup(startupData);
+                try {
+                    // 🌟 Better-Auth-এর সেশন ক্লায়েন্ট থেকে রিফ্রেশ করার সঠিক নিয়ম:
+                    await authClient.refresh(); 
 
-                if (startupData) {
-                    const startupId = startupData._id || startupData.id;
-                    // ৩. স্টার্টআপ আইডি দিয়ে অপরচুনিটিগুলো ফেচ করুন
-                    const opportunities = await getOpportunitiesByStartupId(startupId);
+                    // ডাটাবেজ থেকে লেটেস্ট স্টার্টআপ ডাটা ফেচ
+                    const startupData = await getStartupByFounderId(user.id);
+                    setMyStartup(startupData);
 
-                    if (opportunities && Array.isArray(opportunities)) {
-                        // ৪. অ্যারের লেন্থ দিয়ে কাউন্ট সেট করুন
-                        setOpportunityCount(opportunities.length);
+                    if (startupData) {
+                        const startupId = startupData._id || startupData.id;
+                        const opportunities = await getOpportunitiesByStartupId(startupId);
+
+                        if (opportunities && Array.isArray(opportunities)) {
+                            setOpportunityCount(opportunities.length);
+                        }
                     }
+                } catch (error) {
+                    console.error("Error fetching data:", error);
                 }
             }
             setIsLoadingData(false);
@@ -64,7 +69,7 @@ export default function AddOpportunityPage() {
         const startupIdString = myStartup._id?.toString() || myStartup.id?.toString();
 
         const finalOpportunityData = {
-            startup_id: startupIdString, // এখানে স্ট্রিং আইডি পাস হচ্ছে
+            startup_id: startupIdString,
             role_title: formEntries.role_title,
             required_skills: formEntries.required_skills,
             work_type: formEntries.work_type,
@@ -76,7 +81,7 @@ export default function AddOpportunityPage() {
 
         if (res && res.success) {
             toast.success("🎉 Opportunity Posted Successfully!");
-            setOpportunityCount(prev => prev + 1); // সাকসেসফুলি পোস্ট হলে ক্লায়েন্ট সাইডেও কাউন্ট ১ বাড়িয়ে দিলাম
+            setOpportunityCount(prev => prev + 1);
             formElement.reset();
         } else {
             toast.error(res?.message || "Something went wrong. Try again!");
@@ -89,7 +94,8 @@ export default function AddOpportunityPage() {
         return <div className="text-center p-10 font-bold text-slate-500">Loading Form Data...</div>;
     }
 
-    const isPremium = myStartup?.plan === "premium";
+    // 🌟 ডাটাবেজ এবং সেশন দুই জায়গা থেকেই প্রিমিয়াম প্ল্যান চেক
+    const isPremium = user?.plan === "premium" || myStartup?.plan === "premium";
     const postLimitReached = !isPremium && opportunityCount >= 3;
 
     return (
@@ -103,7 +109,7 @@ export default function AddOpportunityPage() {
                     Post a role for your startup.{" "}
                     {myStartup && (
                         <span className="text-[#D97706] font-medium">
-                            ({isPremium ? "Premium Unlimited" : `${opportunityCount}/3 free slots used`})
+                            ({isPremium ? "⚡ Premium Unlimited" : `${opportunityCount}/3 free slots used`})
                         </span>
                     )}
                 </p>
@@ -120,7 +126,7 @@ export default function AddOpportunityPage() {
                 <PendingApprovalBanner myStartup={myStartup} />
             ) : (
                 <>
-                    {/* ৩টির বেশি হলে প্রিমিয়াম ব্যানার */}
+                    {/* ৩টির বেশি হলে প্রিমিয়াম ব্যানার */}
                     {postLimitReached && <PricingPlanSection />}
 
                     {/* ফর্ম */}
@@ -128,7 +134,6 @@ export default function AddOpportunityPage() {
                         className={`bg-white border border-slate-100 rounded-2xl p-6 shadow-sm space-y-6 flex flex-col w-full transition-all ${postLimitReached ? "opacity-50 pointer-events-none" : ""}`}
                         onSubmit={onSubmit}
                     >
-                        {/* আপনার বাকি ইনপুট ফিল্ডগুলো আগের মতোই থাকবে... */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
                             <TextField isRequired name="role_title" type="text" className="flex flex-col gap-1">
                                 <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">Role Title *</Label>
