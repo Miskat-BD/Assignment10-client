@@ -31,6 +31,7 @@ const RegisterFormPage = ({ redirectTo = "/" }) => {
             name: user.name,
             image: image.url,
             role: role,
+            plan: 'free',
             callbackURL: redirectTo,
         });
         console.log('data', data, 'error', error);

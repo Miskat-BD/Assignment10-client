@@ -8,7 +8,8 @@ import { imageUpload } from "@/app/lib/imgUpload";
 import { createStartup } from "@/app/lib/actions/startup";
 import { getStartupByFounderId } from "@/app/lib/api/startup";
 import UpdateStartupModal from "@/components/dashboard/UpdateStartupModal";
-import DeleteStartupModal from "@/components/dashboard/DeleteStartupModa;";
+import toast from "react-hot-toast";
+import DeleteStartupModal from "@/components/dashboard/DeleteStartupModal";
 
 export default function CreateStartupPage() {
     const [logoPreview, setLogoPreview] = useState(null);
@@ -69,7 +70,7 @@ export default function CreateStartupPage() {
         const res = await createStartup(finalStartupData);
 
         if (res && (res.insertedId || res.acknowledged)) {
-            alert("🎉 Startup Profile Created Successfully!");
+            toast.success("🎉 Startup Profile Created Successfully!");
             setMyStartup(finalStartupData);
         }
         setIsSubmitting(false);
@@ -96,7 +97,7 @@ export default function CreateStartupPage() {
                         <div className="text-center sm:text-left space-y-1">
                             <div className="flex flex-col sm:flex-row items-center gap-3">
                                 <h1 className="text-2xl font-extrabold text-slate-900">{myStartup.name || myStartup.startup_name}</h1>
-                                <span className={`px-3 py-1 ${myStartup.status == 'pending' ? 'bg-amber-50 text-amber-600' : myStartup.status == 'active' ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'} text-xs font-bold rounded-full capitalize border border-amber-200`}>
+                                <span className={`px-3 py-1 ${myStartup.status == 'pending' ? 'bg-amber-50 text-amber-600' : myStartup.status == 'approved' ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'} text-xs font-bold rounded-full capitalize border border-amber-200`}>
                                     {myStartup.status || "pending"}
                                 </span>
                             </div>
