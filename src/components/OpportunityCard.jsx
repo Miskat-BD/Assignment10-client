@@ -81,7 +81,7 @@ export default function OpportunityCard({ opportunity }) {
                     size="sm" 
                     className="bg-slate-900 text-white font-semibold rounded-xl px-4 hover:bg-slate-800"
                 >
-                    Apply Now
+                    View Details
                 </Button>
             </Card.Footer>
         </Card>

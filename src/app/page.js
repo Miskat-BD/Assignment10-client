@@ -1,4 +1,5 @@
 import Banner from "@/components/Banner";
+import OpportunitiesDynamic from "@/components/homepage/OpportunitiesDynamic";
 import StartupDynamic from "@/components/homepage/StartupDynamic";
 
 export default function Home() {
@@ -6,6 +7,7 @@ export default function Home() {
     <>
         <Banner></Banner>
         <StartupDynamic></StartupDynamic>
+        <OpportunitiesDynamic></OpportunitiesDynamic>
     </>
   );
 }
