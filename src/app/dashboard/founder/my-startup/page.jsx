@@ -16,6 +16,7 @@ export default function CreateStartupPage() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isLoadingData, setIsLoadingData] = useState(true);
     const [myStartup, setMyStartup] = useState(null);
+    const [email, setEmail] = useState("");
 
     const { data: session } = authClient.useSession();
     const user = session?.user;
@@ -37,6 +38,12 @@ export default function CreateStartupPage() {
         };
         fetchStartup();
     }, [user?.id]);
+
+    useEffect(() => {
+        if (user?.email) {
+            setEmail(user.email);
+        }
+    }, [user?.email]);
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
@@ -64,6 +71,7 @@ export default function CreateStartupPage() {
             ...formEntries,
             logo: logoUrl,
             founderId: user?.id,
+            founderName: user?.name,
             status: 'pending'
         };
 
@@ -175,7 +183,7 @@ export default function CreateStartupPage() {
                             </div>
                         </div>
 
-                       
+
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
                             <TextField isRequired name="name" type="text" className="flex flex-col gap-1">
                                 <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">Startup Name</Label>
@@ -185,7 +193,7 @@ export default function CreateStartupPage() {
 
                             <TextField isRequired name="founderEmail" type="email" className="flex flex-col gap-1">
                                 <Label className="text-xs font-bold text-slate-700 uppercase tracking-wider">Founder Email</Label>
-                                <Input placeholder="e.g., founder@startupforge.com" className="w-full px-4 py-2 border border-slate-200 rounded-xl text-sm" />
+                                <Input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="e.g., founder@startupforge.com" className="w-full px-4 py-2 border border-slate-200 rounded-xl text-sm" />
                                 <FieldError className="text-xs text-red-500" />
                             </TextField>
 

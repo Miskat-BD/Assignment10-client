@@ -70,6 +70,7 @@ export default function AddOpportunityPage() {
 
         const finalOpportunityData = {
             startup_id: startupIdString,
+            startupName: myStartup.name,
             role_title: formEntries.role_title,
             required_skills: formEntries.required_skills,
             work_type: formEntries.work_type,

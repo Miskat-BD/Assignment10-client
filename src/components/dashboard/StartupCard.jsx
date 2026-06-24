@@ -37,7 +37,7 @@ export default function StartupCard({ startup }) {
                 <div className="overflow-hidden">
                     <p className="text-[10px] uppercase font-bold tracking-wider text-slate-400">Founder</p>
                     <p className="text-xs font-medium text-slate-700 truncate max-w-35">
-                        {startup.founderEmail}
+                        {startup.founderName}
                     </p>
                 </div>
 
