@@ -2,9 +2,11 @@
 
 import React from "react";
 import { Table, Button } from "@heroui/react";
+import UpdateOpportunityModal from "./UpdateOpportunityModal";
+import DeleteOpportunityModal from "./DeleteOpportunityModal";
 
 export default function ManageOpportunitiesTable({ myStartup, opportunities }) {
-    
+
     // ১. যদি ফাউন্ডার কোনো স্টার্টআপ প্রোফাইল তৈরি না করে থাকে
     if (!myStartup) {
         return (
@@ -51,15 +53,11 @@ export default function ManageOpportunitiesTable({ myStartup, opportunities }) {
                                     </Table.Cell>
                                     <Table.Cell className="text-slate-600">{opp.work_type}</Table.Cell>
                                     <Table.Cell className="text-slate-600">{opp.commitment_level}</Table.Cell>
-                                    <Table.Cell className="text-sm text-slate-600">{opp.deadline}</Table.Cell>
+                                    <Table.Cell className="text-sm text-slate-600">{opp.deadline.split('T')[0]}</Table.Cell>
                                     <Table.Cell>
                                         <div className="flex gap-2">
-                                            <Button size="sm" className="bg-blue-600 text-white font-medium min-w-17.5">
-                                                Update
-                                            </Button>
-                                            <Button size="sm" className="bg-rose-600 text-white font-medium min-w-17.5">
-                                                Delete
-                                            </Button>
+                                            <UpdateOpportunityModal opportunity={opp} />
+                                            <DeleteOpportunityModal opportunity={opp}/>
                                         </div>
                                     </Table.Cell>
                                 </Table.Row>

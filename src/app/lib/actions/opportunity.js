@@ -3,10 +3,14 @@
 import { serverMutation } from "../core/server"
 
 
-export const createOpportunity = async (finalOpportunityData)=>{
+export const createOpportunity = async (finalOpportunityData) => {
     return serverMutation('/api/opportunity', "POST", finalOpportunityData)
 }
 
-export const updateOpportunityById = async (targetId, updatedData)=>{
+export const updateOpportunityById = async (targetId, updatedData) => {
     return serverMutation(`/api/opportunity/${targetId}`, 'PATCH', updatedData)
+}
+
+export const deleteOpportunityById = async (targetId) => {
+    return serverMutation(`/api/opportunity/${targetId}`, 'DELETE')
 }

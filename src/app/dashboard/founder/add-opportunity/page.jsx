@@ -75,7 +75,7 @@ export default function AddOpportunityPage() {
             required_skills: formEntries.required_skills,
             work_type: formEntries.work_type,
             commitment_level: formEntries.commitment_level,
-            deadline: formEntries.deadline,
+            deadline: formEntries.deadline ? new Date(formEntries.deadline).toISOString() : null,
         };
 
         const res = await createOpportunity(finalOpportunityData);
