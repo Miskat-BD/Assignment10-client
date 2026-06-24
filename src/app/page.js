@@ -1,10 +1,11 @@
 import Banner from "@/components/Banner";
-import Image from "next/image";
+import StartupDynamic from "@/components/homepage/StartupDynamic";
 
 export default function Home() {
   return (
     <>
         <Banner></Banner>
+        <StartupDynamic></StartupDynamic>
     </>
   );
 }

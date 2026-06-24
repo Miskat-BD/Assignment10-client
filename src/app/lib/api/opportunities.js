@@ -2,6 +2,10 @@
 
 import { serverFetch } from "../core/server"
 
-export const getOpportunitiesByStartupId = async (startupId)=>{
+export const allOpportunity = async () => {
+    return serverFetch('/api/opportunity')
+}
+
+export const getOpportunitiesByStartupId = async (startupId) => {
     return serverFetch(`/api/opportunity/${startupId}`)
 }
