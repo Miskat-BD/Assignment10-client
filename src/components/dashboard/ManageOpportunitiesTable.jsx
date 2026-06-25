@@ -7,7 +7,6 @@ import DeleteOpportunityModal from "./DeleteOpportunityModal";
 
 export default function ManageOpportunitiesTable({ myStartup, opportunities }) {
 
-    // ১. যদি ফাউন্ডার কোনো স্টার্টআপ প্রোফাইল তৈরি না করে থাকে
     if (!myStartup) {
         return (
             <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 text-center">
@@ -18,7 +17,6 @@ export default function ManageOpportunitiesTable({ myStartup, opportunities }) {
         );
     }
 
-    // ২. যদি স্টার্টআপ থাকে কিন্তু কোনো অপরচুনিটি পোস্ট করা না থাকে
     if (!opportunities || opportunities.length === 0) {
         return (
             <div className="bg-slate-50 border border-slate-100 rounded-2xl p-8 text-center text-slate-500">
