@@ -10,10 +10,12 @@ export default function OpportunityDetailsClient({ opportunity }) {
     const { data: session } = authClient.useSession();
     const user = session?.user
     const userRole = user?.role;
+    const applicantName = user?.name
     const applicantEmail = user?.email
 
     const {
         _id,
+        startup_id,
         role_title,
         startupName,
         required_skills,
@@ -156,9 +158,12 @@ export default function OpportunityDetailsClient({ opportunity }) {
                                 </Button>) :
                                     (
                                         <ApplyModal
+                                            startupId={startup_id}
+                                            startupName={startupName}
                                             opportunityId={_id}
                                             opportunityRole={role_title}
                                             applicantEmail={applicantEmail}
+                                            applicantName={applicantName}
                                         ></ApplyModal>
                                     )
                                 }

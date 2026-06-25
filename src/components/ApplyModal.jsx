@@ -5,21 +5,18 @@ import { Button, Input, Label, Modal, Surface, TextField } from "@heroui/react";
 import toast from "react-hot-toast";
 import { applyToOpportunity, getApplicationCheck } from "@/app/lib/actions/applications";
 
-const ApplyModal = ({ opportunityId, applicantEmail, opportunityRole }) => {
+const ApplyModal = ({startupId, startupName, opportunityId, applicantEmail, opportunityRole, applicantName }) => {
     const [portfolioLink, setPortfolioLink] = useState("");
     const [motivation, setMotivation] = useState("");
     const [loading, setLoading] = useState(false);
 
-    // 🟢 নতুন স্টেট: ইউজার ইতিমধ্যে অ্যাপ্লাই করেছেন কিনা তা ট্র্যাক করতে
     const [hasApplied, setHasApplied] = useState(false);
     const [checkingStatus, setCheckingStatus] = useState(true);
 
-    // 🟢 ইউজার আগে অ্যাপ্লাই করেছেন কিনা তা মাউন্ট হওয়ার সময় চেক করা
     useEffect(() => {
         const checkApplicationStatus = async () => {
             if (!opportunityId || !applicantEmail) return;
             try {
-                // আপনার ব্যাকএন্ড পোর্ট ৮০০০ অনুযায়ী এপিআই কল
                 const data = await getApplicationCheck(opportunityId, applicantEmail)
                 setHasApplied(data.hasApplied);
             } catch (error) {
@@ -45,9 +42,12 @@ const ApplyModal = ({ opportunityId, applicantEmail, opportunityRole }) => {
         setLoading(true);
         try {
             const applicationData = {
+                Startup_id: startupId,
+                Startup_name: startupName,
                 Opportunity_id: opportunityId,
                 Opportunity_Role: opportunityRole,
                 Applicant_email: applicantEmail,
+                Applicant_name: applicantName,
                 Portfolio_link: portfolioLink,
                 Motivation: motivation,
                 Status: "Pending",
@@ -60,7 +60,7 @@ const ApplyModal = ({ opportunityId, applicantEmail, opportunityRole }) => {
                 toast.success("Application submitted successfully! 🎉");
                 setPortfolioLink("");
                 setMotivation("");
-                setHasApplied(true); // 🟢 সফল সাবমিশনের পর বাটন ডিজেবল করার জন্য
+                setHasApplied(true); 
             }
         } catch (error) {
             console.error("Submission Error:", error);
@@ -72,7 +72,6 @@ const ApplyModal = ({ opportunityId, applicantEmail, opportunityRole }) => {
 
     return (
         <Modal>
-            {/* 🟢 কন্ডিশনাল ট্রিগার বাটন স্টাইলিং ও টেক্সট */}
             <Button
                 isDisabled={checkingStatus || hasApplied}
                 className={`w-full font-bold h-12 rounded-2xl shadow-md transition-all ${hasApplied ? "bg-gray-400 text-white cursor-not-allowed" : "bg-slate-900 text-white hover:bg-blue-600"
@@ -142,7 +141,7 @@ const ApplyModal = ({ opportunityId, applicantEmail, opportunityRole }) => {
                                 type="submit"
                                 form="apply-role-form"
                                 isLoading={loading}
-                                isDisabled={hasApplied} // 🟢 আগে অ্যাপ্লাই করা থাকলে সাবমিট বাটনও ডিজেবল থাকবে
+                                isDisabled={hasApplied} 
                                 className="bg-slate-900 text-white font-bold"
                             >
                                 Submit Application
