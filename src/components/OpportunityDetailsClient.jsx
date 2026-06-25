@@ -4,12 +4,16 @@ import React from "react";
 import { Card, Button, Chip, Avatar } from "@heroui/react";
 import Link from "next/link";
 import { authClient } from "@/app/lib/auth-client";
+import ApplyModal from "./ApplyModal";
 
 export default function OpportunityDetailsClient({ opportunity }) {
     const { data: session } = authClient.useSession();
-    const userRole = session?.user?.role;
+    const user = session?.user
+    const userRole = user?.role;
+    const applicantEmail = user?.email
 
     const {
+        _id,
         role_title,
         startupName,
         required_skills,
@@ -81,7 +85,7 @@ export default function OpportunityDetailsClient({ opportunity }) {
                             </Card.Header>
 
                             <Card.Content className="pt-6 flex flex-col gap-6">
-                               
+
 
                                 <div className="flex flex-col gap-3 pt-2">
                                     <h3 className="text-base font-bold text-slate-800">Required Skills</h3>
@@ -140,17 +144,24 @@ export default function OpportunityDetailsClient({ opportunity }) {
                             </Card.Content>
 
                             <Card.Footer className="pt-0 flex flex-col gap-3 w-full">
-                                <Button
+                                {isRestrictedRole ? (<Button
                                     disabled={isRestrictedRole}
-                                    className={`w-full font-bold h-12 rounded-2xl shadow-md transition-all ${
-                                        isRestrictedRole
-                                            ? "bg-slate-200 text-slate-400 cursor-not-allowed border border-slate-200 shadow-none"
-                                            : "bg-slate-900 text-white hover:bg-blue-600"
-                                    }`}
+                                    className={`w-full font-bold h-12 rounded-2xl shadow-md transition-all ${isRestrictedRole
+                                        && "bg-slate-200 text-slate-400 cursor-not-allowed border border-slate-200 shadow-none"
+
+                                        }`}
                                     size="lg"
                                 >
-                                    {isRestrictedRole ? "Only Collaborators Can Apply" : "Apply For This Role"}
-                                </Button>
+                                    {isRestrictedRole && "Only Collaborators Can Apply"}
+                                </Button>) :
+                                    (
+                                        <ApplyModal
+                                            opportunityId={_id}
+                                            opportunityRole={role_title}
+                                            applicantEmail={applicantEmail}
+                                        ></ApplyModal>
+                                    )
+                                }
                             </Card.Footer>
                         </Card>
                     </div>
