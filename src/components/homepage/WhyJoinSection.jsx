@@ -29,8 +29,8 @@ export default function WhyJoinSection() {
     ];
 
     return (
-        <section className="py-20 sm:py-28 bg-gradient-to-b from-slate-50 via-white to-slate-50 relative overflow-hidden">
-            <div className="absolute inset-0 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:24px_24px] opacity-40 pointer-events-none" />
+        <section className="py-20 sm:py-28 bg-glinear-to-b from-slate-50 via-white to-slate-50 relative overflow-hidden">
+            <div className="absolute inset-0 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [bg-size:24px_24px] opacity-40 pointer-events-none" />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 
@@ -55,7 +55,7 @@ export default function WhyJoinSection() {
                             <div className="absolute -right-10 -top-10 w-32 h-32 bg-slate-50 rounded-full group-hover:scale-150 transition-transform duration-500 pointer-events-none opacity-50 mix-blend-multiply" />
 
                             <Card.Header className="flex items-center justify-between w-full pb-0 z-10">
-                                <div className={`text-2xl bg-gradient-to-br ${item.colorClass} border w-14 h-14 flex items-center justify-center rounded-2xl shadow-sm group-hover:scale-110 transition-transform duration-300`}>
+                                <div className={`text-2xl bg-linear-to-br ${item.colorClass} border w-14 h-14 flex items-center justify-center rounded-2xl shadow-sm group-hover:scale-110 transition-transform duration-300`}>
                                     {item.icon}
                                 </div>
                                 <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 bg-slate-50 border border-slate-100 px-3 py-1 rounded-full">

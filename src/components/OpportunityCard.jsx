@@ -1,8 +1,10 @@
 import React from "react";
 import { Card, Button, Chip } from "@heroui/react";
+import Link from "next/link";
 
 export default function OpportunityCard({ opportunity }) {
     const {
+        _id,
         role_title,
         startupName,
         required_skills,
@@ -77,12 +79,13 @@ export default function OpportunityCard({ opportunity }) {
             </Card.Content>
 
             <Card.Footer className="pt-2 border-t border-slate-50 mt-2 flex justify-end">
-                <Button 
+                <Link
+                href={`/opportunities/${_id}`} 
                     size="sm" 
                     className="bg-slate-900 text-white font-semibold rounded-xl px-4 hover:bg-slate-800"
                 >
                     View Details
-                </Button>
+                </Link>
             </Card.Footer>
         </Card>
     );

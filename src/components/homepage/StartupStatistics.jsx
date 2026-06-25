@@ -13,12 +13,10 @@ export default function StatsSection() {
 
     return (
         <section className="py-16 bg-white relative">
-            {/* ব্যাকগ্রাউন্ড ডেকোরেশন */}
-            <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent via-slate-200 to-transparent" />
             
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <Card className="bg-slate-900 text-white rounded-[2rem] p-8 sm:p-12 shadow-2xl border border-slate-800 relative overflow-hidden">
-                    {/* ব্যাকগ্রাউন্ড ডার্ক গ্লো ইফেক্ট */}
                     <div className="absolute -right-20 -top-20 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
                     <div className="absolute -left-20 -bottom-20 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -30,7 +28,7 @@ export default function StatsSection() {
                                     index !== stats.length - 1 ? "lg:border-r lg:border-slate-800" : ""
                                 } pr-4`}
                             >
-                                <span className="text-4xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400 tracking-tight">
+                                <span className="text-4xl sm:text-5xl font-black text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-emerald-400 tracking-tight">
                                     {stat.value}
                                 </span>
                                 <div className="flex flex-col gap-0.5">

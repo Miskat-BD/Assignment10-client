@@ -6,6 +6,10 @@ export const allOpportunity = async () => {
     return serverFetch('/api/opportunity')
 }
 
+export const getOpportunityById = async (id) => {
+    return serverFetch(`/api/opportunity/${id}`)
+}
+
 export const getOpportunitiesByStartupId = async (startupId) => {
     return serverFetch(`/api/opportunity/${startupId}`)
 }
