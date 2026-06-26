@@ -10,12 +10,10 @@ export default async function FounderApplicationsPage() {
     let applications = [];
 
     if (user?.id) {
-        // প্রথমে ফাউন্ডারের নিজস্ব স্টার্টআপ প্রোফাইল নিয়ে আসা হচ্ছে
         myStartup = await getStartupByFounderId(user.id);
         
         if (myStartup) {
             const startupId = myStartup._id?.toString() || myStartup.id?.toString();
-            // স্টার্টআপ আইডি দিয়ে জমা হওয়া অ্যাপ্লিকেশনগুলো ফেচ করা হচ্ছে
             const appList = await getApplicationsByStartupId(startupId);
             if (Array.isArray(appList)) {
                 applications = appList;

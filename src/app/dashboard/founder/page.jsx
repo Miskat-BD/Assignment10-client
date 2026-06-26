@@ -1,22 +1,42 @@
 import React from "react";
-import { requiredRole } from "@/app/lib/core/session"; // আপনার session ফাইলের সঠিক পাথ দিন
+import { getUserSession, requiredRole } from "@/app/lib/core/session";
 import Link from "next/link";
+import { getStartupByFounderId } from "@/app/lib/api/startup";
+import { getOpportunitiesByStartupId } from "@/app/lib/api/opportunities";
+import { getApplicationsByStartupId } from "@/app/lib/api/applications.";
 
 const FounderDashboardPage = async () => {
-    // 🛡️ সার্ভার-সাইড রোল ভেরিফিকেশন (ইউজার ফাউন্ডার না হলে অটোমেটিক /unauthorized এ রিডাইরেক্ট হবে)
     const user = await requiredRole("founder");
+    const activeUser = await getUserSession();
 
-    // ডেমো ডাটা (পরবর্তীতে ডাটাবেজ থেকে কুয়েরি করে এখানে বসাবেন)
+    let myStartup = null;
+    let opportunities = [];
+    let applications = []
+
+    if (activeUser?.id) {
+        myStartup = await getStartupByFounderId(activeUser?.id);
+
+        if (myStartup) {
+            const startupId = myStartup._id?.toString() || myStartup.id?.toString();
+
+            const oppList = await getOpportunitiesByStartupId(startupId);
+            if (Array.isArray(oppList)) {
+                opportunities = oppList;
+            }
+
+            const appList = await getApplicationsByStartupId(startupId);
+            if(Array.isArray(appList)){
+                applications = appList
+            }
+        }
+    }
+
+    const acceptedMembers = applications.filter(apps => apps.Status == 'Approved')
+
     const stats = [
-        { name: "Total Opportunities", value: "12", change: "+2 this week", color: "text-emerald-600", bg: "bg-emerald-50" },
-        { name: "Total Applications", value: "48", change: "+12 pending", color: "text-blue-600", bg: "bg-blue-50" },
-        { name: "Accepted Members", value: "8", change: "Active talent", color: "text-purple-600", bg: "bg-purple-50" },
-    ];
-
-    const recentApplications = [
-        { id: 1, applicant: "Anik Rahman", role: "Frontend Developer", opportunity: "Next.js Co-founder", status: "Pending" },
-        { id: 2, applicant: "Sadia Islam", role: "UI/UX Designer", opportunity: "Mobile App Design", status: "Reviewed" },
-        { id: 3, applicant: "Tanvir Ahmed", role: "Backend Engineer", opportunity: "Node.js Developer", status: "Pending" },
+        { name: "Total Opportunities", value: opportunities.length, change: "+2 this week", color: "text-emerald-600", bg: "bg-emerald-50" },
+        { name: "Total Applications", value: applications.length, change: "+12 pending", color: "text-blue-600", bg: "bg-blue-50" },
+        { name: "Accepted Members", value: acceptedMembers.length, change: "Active talent", color: "text-purple-600", bg: "bg-purple-50" },
     ];
 
     return (
@@ -31,7 +51,7 @@ const FounderDashboardPage = async () => {
                         Welcome back, <span className="font-semibold text-slate-700">{user.name}</span>! Here is your startup progress.
                     </p>
                 </div>
-                
+
                 {/* Quick Action Button */}
                 <Link
                     href="/dashboard/founder/add-opportunity"
@@ -47,8 +67,8 @@ const FounderDashboardPage = async () => {
             {/* 📊 Analytics Stats Grid */}
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 {stats.map((stat) => (
-                    <div 
-                        key={stat.name} 
+                    <div
+                        key={stat.name}
                         className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between transition-all hover:shadow-md"
                     >
                         <div>
@@ -65,53 +85,7 @@ const FounderDashboardPage = async () => {
                 ))}
             </div>
 
-            {/* 📋 Recent Activity & Applications Table */}
-            <div className="bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden">
-                <div className="p-5 border-b border-slate-100 flex items-center justify-between">
-                    <div>
-                        <h3 className="text-base font-bold text-slate-800">Recent Applications</h3>
-                        <p className="text-xs text-slate-400 mt-0.5">Latest talents applied for your startup opportunities</p>
-                    </div>
-                    <Link 
-                        href="/dashboard/founder/applications" 
-                        className="text-xs font-semibold text-emerald-600 hover:text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-lg transition-all"
-                    >
-                        View All
-                    </Link>
-                </div>
 
-                {/* Responsive Table Wrapper */}
-                <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse">
-                        <thead>
-                            <tr className="bg-slate-50 text-slate-400 uppercase text-[10px] font-bold tracking-wider border-b border-slate-100">
-                                <th className="py-3 px-6">Applicant</th>
-                                <th className="py-3 px-6">Opportunity</th>
-                                <th className="py-3 px-6">Role</th>
-                                <th className="py-3 px-6 text-center">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-slate-50 text-sm text-slate-600">
-                            {recentApplications.map((app) => (
-                                <tr key={app.id} className="hover:bg-slate-50/50 transition-colors">
-                                    <td className="py-4 px-6 font-semibold text-slate-800">{app.applicant}</td>
-                                    <td className="py-4 px-6 text-slate-500">{app.opportunity}</td>
-                                    <td className="py-4 px-6">{app.role}</td>
-                                    <td className="py-4 px-6 text-center">
-                                        <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${
-                                            app.status === "Pending" 
-                                                ? "bg-amber-50 text-amber-700 border border-amber-100" 
-                                                : "bg-blue-50 text-blue-700 border border-blue-100"
-                                        }`}>
-                                            {app.status}
-                                        </span>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
         </div>
     );
 };

@@ -95,13 +95,11 @@ export default function AddOpportunityPage() {
         return <div className="text-center p-10 font-bold text-slate-500">Loading Form Data...</div>;
     }
 
-    // 🌟 ডাটাবেজ এবং সেশন দুই জায়গা থেকেই প্রিমিয়াম প্ল্যান চেক
     const isPremium = user?.plan === "premium" || myStartup?.plan === "premium";
     const postLimitReached = !isPremium && opportunityCount >= 3;
 
     return (
         <div className="max-w-4xl space-y-6 animate-fade-in p-2">
-            {/* হেডার */}
             <div className="pb-4 border-b border-slate-100">
                 <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight sm:text-3xl">
                     Add Opportunity
@@ -116,7 +114,6 @@ export default function AddOpportunityPage() {
                 </p>
             </div>
 
-            {/* শর্তসমূহ */}
             {!myStartup ? (
                 <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 text-center">
                     <p className="text-amber-800 font-medium">
@@ -127,7 +124,6 @@ export default function AddOpportunityPage() {
                 <PendingApprovalBanner myStartup={myStartup} />
             ) : (
                 <>
-                    {/* ৩টির বেশি হলে প্রিমিয়াম ব্যানার */}
                     {postLimitReached && <PricingPlanSection />}
 
                     {/* ফর্ম */}

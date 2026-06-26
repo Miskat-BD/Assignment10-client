@@ -29,12 +29,10 @@ export default async function Success({ searchParams }) {
             <div className="min-h-[85vh] flex items-center justify-center bg-slate-50/50 px-4 py-12">
                 <div className="max-w-md w-full bg-white border border-slate-100 rounded-3xl p-8 shadow-xl shadow-slate-200/50 text-center space-y-6 animate-fade-in">
 
-                    {/* সাকসেস অ্যানিমেশন আইকন */}
                     <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-emerald-100 border-4 border-emerald-50 text-emerald-600 text-3xl">
                         🎉
                     </div>
 
-                    {/* হেডিংস */}
                     <div className="space-y-2">
                         <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight sm:text-3xl">
                             Payment Successful!
@@ -44,7 +42,6 @@ export default async function Success({ searchParams }) {
                         </p>
                     </div>
 
-                    {/* মূল মেসেজ কার্ড */}
                     <div className="bg-slate-50 border border-slate-200/60 rounded-2xl p-5 text-sm text-slate-600 text-left space-y-3 leading-relaxed">
                         <p>
                             We appreciate your business! A confirmation email and invoice will be sent shortly to:
@@ -63,7 +60,6 @@ export default async function Success({ searchParams }) {
                         </p>
                     </div>
 
-                    {/* অ্যাকশন বাটনসমূহ */}
                     <div className="pt-2 flex flex-col sm:flex-row gap-3">
                         <Link
                             href="/dashboard/founder/add-opportunity"

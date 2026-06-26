@@ -67,7 +67,7 @@ const PlansPage = () => {
                             <h3 className="text-xl font-bold text-amber-400">Premium Growth</h3>
                             <p className="text-slate-400 text-xs">Unlock full recruiting power with no limitations.</p>
                             <div className="flex items-baseline gap-1 pt-2">
-                                <span className="text-4xl font-extrabold text-white">$49.99</span>
+                                <span className="text-4xl font-extrabold text-white">$29.99</span>
                                 <span className="text-slate-400 text-sm">/monthly</span>
                             </div>
                         </div>
