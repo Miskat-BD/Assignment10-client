@@ -13,3 +13,7 @@ export const getApplicationCheck = async (opportunityId, applicantEmail) => {
 export const getApplicationByEmail = async (applicantEmail) => {
     return serverFetch(`/api/application/${applicantEmail}`)
 }
+
+export const updateApplicationStatus = async (id, newStatus) => {
+    return serverMutation(`/application/${id}`, "PATCH", { status: newStatus })
+}

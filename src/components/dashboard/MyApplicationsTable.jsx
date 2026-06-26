@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import { Table } from "@heroui/react";
 
 const MyApplicationsTable = ({ applications }) => {
-    // 🟢 Hydration Error ফিক্স করার জন্য মাউন্টেড স্টেট ট্র্যাকিং
     const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {

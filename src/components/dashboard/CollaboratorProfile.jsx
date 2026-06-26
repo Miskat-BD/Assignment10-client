@@ -11,24 +11,21 @@ const CollaboratorProfile = ({ initialData, mongoUser }) => {
     const [loading, setLoading] = useState(false);
     const router = useRouter()
     
-    // 🟢 ইনপুটের জন্য স্টেট
     const [formDataState, setFormDataState] = useState({
         name: "",
         bio: "",
         skills: ""
     });
 
-    // 🟢 ডাটাবেজের আসল ডাটা (mongoUser) আসার সাথে সাথে স্টেট আপডেট হবে
     useEffect(() => {
         if (mongoUser) {
             setFormDataState({
                 name: mongoUser.name || "",
                 bio: mongoUser.bio || "",
-                // ডাটাবেজের skills অ্যারে হলে কমা দিয়ে স্ট্রিং বানানো হচ্ছে
                 skills: Array.isArray(mongoUser.skills) ? mongoUser.skills.join(', ') : (mongoUser.skills || "")
             });
         }
-    }, [mongoUser]); // 👈 mongoUser এর ওপর নজর রাখবে
+    }, [mongoUser]); 
 
     const handleUpdateProfile = async (e) => {
         e.preventDefault();
@@ -37,7 +34,6 @@ const CollaboratorProfile = ({ initialData, mongoUser }) => {
         const formData = new FormData(e.currentTarget);
         const formValues = Object.fromEntries(formData.entries());
 
-        // MongoDB-র আইডি আমরা mongoUser বা initialData থেকে পেতে পারি
         const userId = mongoUser?._id || initialData?.id;
 
         if (!userId) {
@@ -49,7 +45,6 @@ const CollaboratorProfile = ({ initialData, mongoUser }) => {
         try {
             let uploadedImageUrl = mongoUser?.image || "";
 
-            // 📸 ইমেজ আপলোড লজিক
             if (formValues.image && formValues.image.size > 0) {
                 const imgData = await imageUpload(formValues.image);
                 if (imgData?.url) {
@@ -57,7 +52,6 @@ const CollaboratorProfile = ({ initialData, mongoUser }) => {
                 }
             }
 
-            // ব্যাকএন্ডের রিকোয়েস্ট বডি
             const profileData = {
                 name: formValues.name,
                 image: uploadedImageUrl,
