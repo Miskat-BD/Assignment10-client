@@ -12,6 +12,13 @@ export default function OpportunityDetailsClient({ opportunity }) {
     const userRole = user?.role;
     const applicantName = user?.name
     const applicantEmail = user?.email
+    const status = user?.status
+
+    if(status == 'block' && userRole == 'collaborator'){
+        return <div className="text-center h-screen">
+            <h2 className="text-gray-400">The User is Blocked by Admin</h2>
+        </div>
+    }
 
     const {
         _id,

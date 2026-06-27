@@ -19,13 +19,21 @@ export default function AddOpportunityPage() {
     // 🌟 এখানে শুধু data নিন, updateSession এর দরকার নেই
     const { data: session } = authClient.useSession();
     const user = session?.user;
+    const status = session?.user?.status
+    const userRole = session?.user?.role
+
+    if (status == 'block' && userRole == 'founder') {
+        return <div className="text-center h-screen">
+            <h2 className="text-gray-400">The User is Blocked by Admin</h2>
+        </div>
+    }
 
     useEffect(() => {
         const fetchData = async () => {
             if (user?.id) {
                 try {
                     // 🌟 Better-Auth-এর সেশন ক্লায়েন্ট থেকে রিফ্রেশ করার সঠিক নিয়ম:
-                    await authClient.refresh(); 
+                    await authClient.refresh();
 
                     // ডাটাবেজ থেকে লেটেস্ট স্টার্টআপ ডাটা ফেচ
                     const startupData = await getStartupByFounderId(user.id);

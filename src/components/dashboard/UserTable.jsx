@@ -9,13 +9,15 @@ const UserTable = ({ users }) => {
     const [isPending, startTransition] = useTransition();
     const [loadingId, setLoadingId] = useState(null);
 
+    // 🔍 এখানে ফিল্টার করে অ্যাডমিন ইউজারদের বাদ দেওয়া হলো
+    const filteredUsers = users?.filter(user => user.role !== 'admin') || [];
+
     const handleBlockToggle = async (id, currentStatus) => {
         const nextStatus = currentStatus === 'block' ? 'unblock' : 'block';
         
         setLoadingId(id);
         startTransition(async () => {
             try {
-                // ২য় প্যারামিটারে অবজেক্ট আকারে ডাটা পাঠানো হলো { status: 'block'/'unblock' }
                 await updateUserBlockStatus(id, { status: nextStatus });
                 toast.success(`User successfully ${nextStatus}ed!`);
             } catch (error) {
@@ -26,7 +28,8 @@ const UserTable = ({ users }) => {
         });
     };
 
-    if (!users || users.length === 0) {
+    // চেক করা হচ্ছে অ্যাডমিন বাদে অন্য কোনো ইউজার বাকি আছে কিনা
+    if (filteredUsers.length === 0) {
         return (
             <div className="bg-white p-12 text-center rounded-2xl border border-slate-100 shadow-sm text-slate-500">
                 👥 No users found on the platform.
@@ -49,7 +52,8 @@ const UserTable = ({ users }) => {
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-50 text-sm text-slate-700">
-                        {users.map((user) => (
+                        {/* 🔄 ফিল্টার করা লিস্ট (filteredUsers) দিয়ে ম্যাপ চালানো হলো */}
+                        {filteredUsers.map((user) => (
                             <tr key={user._id} className="hover:bg-slate-50/50 transition-colors">
                                 <td className="px-6 py-4 font-semibold text-slate-900">
                                     <div className="flex items-center gap-3">
