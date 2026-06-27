@@ -53,6 +53,7 @@ export default function UpdateStartupModal({ myStartup, setMyStartup, fundingSta
             setIsUpdating(false);
             return;
         }
+        // console.log(filteredUpdates);
 
         const res = await updateStartup(myStartup._id || myStartup.id, filteredUpdates);
 

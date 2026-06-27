@@ -1,6 +1,6 @@
 'use server'
 
-import { serverFetch } from "../core/server"
+import { protectedFetch, serverFetch } from "../core/server"
 
 export const allOpportunity = async () => {
     return serverFetch('/api/opportunity')

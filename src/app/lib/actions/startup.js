@@ -6,6 +6,7 @@ export const createStartup = async (data) => {
 }
 
 export const updateStartup = async (startupId, updatedData) => {
+    console.log(startupId, updatedData, 'miskat');
     return serverMutation(`/api/startup/${startupId}`, 'PATCH', updatedData)
 }
 
