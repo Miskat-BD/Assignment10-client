@@ -4,9 +4,7 @@ StartupForge is a centralized hub designed to bridge the gap between visionary s
 
 ## 🚀 Live Links & Repositories
 
-- **Live Deployment:** [YOUR_LIVE_SITE_LINK_HERE]
-- **Client-Side Repository:** [YOUR_CLIENT_GITHUB_LINK_HERE]
-- **Server-Side Repository:** [YOUR_SERVER_GITHUB_LINK_HERE]
+- **Live Deployment:** https://startup-forge-client-mu.vercel.app
 
 ---
 
