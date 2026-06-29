@@ -2,24 +2,18 @@
 
 import { protectedFetch, serverFetch } from "../core/server"
 
-const BaseURL = process.env.NEXT_PUBLIC_BASE_URL
-
-export const allOpportunity = async (page) => {
+export const allOpportunity = async (page = 1, limit = 6, search = "", workType = "") => {
     if (!page) {
-        page = 1
+        page = 1;
     }
-    const res = await fetch(`${BaseURL}/api/opportunity?page=${page}`)
-    const data = await res.json()
-    return data
-    // return serverFetch(`/api/opportunity?page=${page}`)
-}
+    return serverFetch(`/api/opportunity?page=${page}&limit=${limit}&search=${encodeURIComponent(search)}&workType=${encodeURIComponent(workType)}`);
+};
 
 export const getOpportunityById = async (id) => {
-    return serverFetch(`/api/opportunity/${id}`)
+    return protectedFetch(`/api/opportunity/${id}`)
 }
 
 export const getOpportunitiesByStartupId = async (startupId) => {
     return serverFetch(`/api/opportunity/startup/${startupId}`)
 }
-
 

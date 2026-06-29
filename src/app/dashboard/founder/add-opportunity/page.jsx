@@ -16,7 +16,6 @@ export default function AddOpportunityPage() {
     const [myStartup, setMyStartup] = useState(null);
     const [opportunityCount, setOpportunityCount] = useState(0);
 
-    // 🌟 এখানে শুধু data নিন, updateSession এর দরকার নেই
     const { data: session } = authClient.useSession();
     const user = session?.user;
     const status = session?.user?.status
@@ -32,10 +31,9 @@ export default function AddOpportunityPage() {
         const fetchData = async () => {
             if (user?.id) {
                 try {
-                    // 🌟 Better-Auth-এর সেশন ক্লায়েন্ট থেকে রিফ্রেশ করার সঠিক নিয়ম:
+                  
                     await authClient.refresh();
 
-                    // ডাটাবেজ থেকে লেটেস্ট স্টার্টআপ ডাটা ফেচ
                     const startupData = await getStartupByFounderId(user.id);
                     setMyStartup(startupData);
 
@@ -134,7 +132,6 @@ export default function AddOpportunityPage() {
                 <>
                     {postLimitReached && <PricingPlanSection />}
 
-                    {/* ফর্ম */}
                     <Form
                         className={`bg-white border border-slate-100 rounded-2xl p-6 shadow-sm space-y-6 flex flex-col w-full transition-all ${postLimitReached ? "opacity-50 pointer-events-none" : ""}`}
                         onSubmit={onSubmit}

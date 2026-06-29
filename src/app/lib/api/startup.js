@@ -1,16 +1,16 @@
 'use server'
 
-import { serverFetch } from "../core/server"
+import { protectedFetch, serverFetch } from "../core/server"
 
 export const getAllStartups = async () => {
     return serverFetch('/api/startups')
 }
 
 export const getStartupByFounderId = async (founderId) => {
-    return serverFetch(`/startup/${founderId}`)
+    return protectedFetch(`/startup/${founderId}`)
 }
 
 export const getStartupDetailsById = async (startupId)=>{
-    return serverFetch(`/api/startup/${startupId}`)
+    return protectedFetch(`/api/startup/${startupId}`)
 }
 
