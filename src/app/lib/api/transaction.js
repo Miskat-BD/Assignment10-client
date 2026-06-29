@@ -1,8 +1,8 @@
 'use server'
 
-import { serverFetch } from "../core/server"
+import { protectedFetch, serverFetch } from "../core/server"
 
 
 export const getAllTransaction = async () => {
-    return serverFetch('/api/transaction')
+    return protectedFetch('/api/transaction')
 }

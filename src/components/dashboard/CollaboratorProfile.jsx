@@ -60,7 +60,7 @@ const CollaboratorProfile = ({ initialData, mongoUser }) => {
             };
 
             const data = await updateProfile(userId, profileData);
-            console.log("Server Response:", data);
+            // console.log("Server Response:", data);
 
             if (data?.acknowledged || data?.success || data?.modifiedCount > 0) {
                 toast.success("Profile updated successfully! 🎉");

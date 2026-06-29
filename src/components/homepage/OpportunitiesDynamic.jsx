@@ -3,7 +3,7 @@ import OpportunityCard from "../OpportunityCard";
 import Link from "next/link";
 
 const OpportunitiesDynamic = async () => {
-    const opportunities = await allOpportunity();
+    const {opportunities} = await allOpportunity();
 
     if (!opportunities || opportunities.length === 0) {
         return (

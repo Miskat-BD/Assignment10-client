@@ -24,7 +24,7 @@ const AdminDashboardPage = async () => {
 
         users = usersData || [];
         startups = startupsData || [];
-        opportunities = oppData || [];
+        opportunities = oppData.totalData || [];
     } catch (error) {
         console.error("Error loading admin overview stats:", error);
     }
@@ -50,7 +50,7 @@ const AdminDashboardPage = async () => {
         },
         {
             name: "Total Opportunities",
-            value: opportunities.length,
+            value: opportunities,
             change: "Live Positions",
             color: "text-emerald-600",
             bg: "bg-emerald-50"

@@ -1,9 +1,18 @@
 import OpportunityCard from "@/components/OpportunityCard";
 import { allOpportunity } from "../lib/api/opportunities";
+import { Pagination } from "@heroui/react";
+import Link from "next/link";
 
-const OpportunitiesPage = async () => {
-    const opportunities = await allOpportunity();
+const OpportunitiesPage = async ({ searchParams }) => {
+    const params = await searchParams;
+    console.log(params, ' page');
+    const { opportunities, page, totalPages } = await allOpportunity(params.page);
     // console.log(opportunities, 'all ');
+    const pages = []
+    for (let i = 1; i <= totalPages; i++) {
+        pages.push(i)
+    }
+    console.log(pages, 'page');
 
     return (
         <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
@@ -21,6 +30,7 @@ const OpportunitiesPage = async () => {
                     😭 No opportunities available right now. Check back later!
                 </div>
             ) : (
+                <>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {opportunities.map((opp) => (
                         <OpportunityCard
@@ -28,7 +38,47 @@ const OpportunitiesPage = async () => {
                             opportunity={opp}
                         />
                     ))}
+                    
                 </div>
+                <div className="flex justify-center items-center text-center mx-auto p-5 mt-10">
+                        <Pagination size="sm">
+                            <Pagination.Content>
+                                <Pagination.Item>
+                                    <Pagination.Previous
+                                        isDisabled={page === 1}
+
+                                    >
+                                        <Link className="flex gap-2" href={`/opportunities?page=${page - 1}`}>
+                                            <Pagination.PreviousIcon />
+                                            Prev</Link>
+                                    </Pagination.Previous>
+                                </Pagination.Item>
+
+                                {/* [1, 2, 3, 4, 5, 6, 7, 8, 9] */}
+                                {pages.map((p) => (
+                                    <Pagination.Item key={p}>
+                                        <Link href={`/opportunities?page=${p}`}>
+                                            <Pagination.Link className={`${p === page && 'bg-blue-500 text-white'}`} isActive={p === page}>
+                                                {p}
+                                            </Pagination.Link>
+                                        </Link>
+                                    </Pagination.Item>
+                                ))}
+                                <Pagination.Item>
+                                    <Pagination.Next
+                                        isDisabled={page === totalPages}
+                                    >
+                                        <Link className="flex gap-2" href={`/opportunities?page=${page + 1}`}>
+                                            Next
+                                            <Pagination.NextIcon />
+                                        </Link>
+                                    </Pagination.Next>
+                                </Pagination.Item>
+                            </Pagination.Content>
+                        </Pagination>
+                    </div>
+                </>
+                
             )}
         </div>
     );
